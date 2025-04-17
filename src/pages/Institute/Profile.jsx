@@ -1,145 +1,49 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React from "react";
+import { PlusSquare } from "lucide-react";
+import { Link } from "react-router-dom"; // ✅ Add this line
 
-const Profile = () => {
-  const [isLogin, setIsLogin] = useState(true);
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [jobTitle, setJobTitle] = useState("");
-  const [institution, setInstitution] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const navigate = useNavigate();
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (password.length < 7) {
-      setError("Password should be at least 7 characters long");
-      return;
-    }
-    setError("");
-    // Proceed with form submission logic
-  };
-
+const Profile = ({ data }) => {
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100">
-      <div className="bg-white p-8 rounded-lg shadow-lg w-96">
-        <h2 className="text-2xl font-bold text-center mb-4">
-          {isLogin ? "Log In" : "Sign Up"}
-        </h2>
+    <div className="max-w-4xl mx-auto p-6 mt-10 bg-white dark:bg-gray-900 shadow-lg rounded-lg">
+      <div className="flex items-center space-x-6 mb-6">
+        <div className="w-24 h-24 bg-blue-900 rounded-full flex items-center justify-center text-white text-2xl font-bold">
+          {data.fullName?.charAt(0) || "U"}
+        </div>
+        <div>
+          <h2 className="text-3xl font-bold dark:text-white">
+            {data.fullName}
+          </h2>
+          <p className="mt-2 text-gray-700 dark:text-gray-300">
+            <strong>Job Title:</strong> {data.jobTitle}
+          </p>
+          <p className="text-gray-700 dark:text-gray-300">
+            <strong>Institute Name:</strong> {data.instituteName}
+          </p>
+        </div>
+      </div>
 
-        <form onSubmit={handleSubmit}>
-          {!isLogin && (
-            <>
-              <div className="mb-4">
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  First Name
-                </label>
-                <input
-                  type="text"
-                  className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Enter your first name"
-                  value={firstName}
-                  onChange={(e) => setFirstName(e.target.value)}
-                />
-              </div>
-
-              <div className="mb-4">
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Last Name
-                </label>
-                <input
-                  type="text"
-                  className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Enter your last name"
-                  value={lastName}
-                  onChange={(e) => setLastName(e.target.value)}
-                />
-              </div>
-            </>
-          )}
-
-          <div className="mb-4">
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
-              Email
-            </label>
-            <input
-              type="email"
-              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Enter your email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+        {/* ✅ Wrap with Link */}
+        <Link
+          to="/institute/listing/programs"
+          className="p-4 border dark:border-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition"
+        >
+          <div className="flex items-center justify-center gap-2 mb-2">
+            <PlusSquare size={20} className="text-blue-600" />
+            <p className="text-lg font-semibold dark:text-white">Programs</p>
           </div>
+          <p className="text-gray-500 text-sm">Add your institute programs</p>
+        </Link>
 
-          {!isLogin && (
-            <>
-              <div className="mb-4">
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Job Title
-                </label>
-                <input
-                  type="text"
-                  className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Enter your job title"
-                  value={jobTitle}
-                  onChange={(e) => setJobTitle(e.target.value)}
-                />
-              </div>
+        <div className="p-4 border dark:border-gray-700 rounded-lg">
+          <p className="text-lg font-semibold dark:text-white">Followers</p>
+          <p className="text-gray-500 text-sm">Coming Soon</p>
+        </div>
 
-              <div className="mb-4">
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Institution
-                </label>
-                <input
-                  type="text"
-                  className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Enter your institution"
-                  value={institution}
-                  onChange={(e) => setInstitution(e.target.value)}
-                />
-              </div>
-            </>
-          )}
-
-          <div className="mb-6">
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
-              Password
-            </label>
-            <input
-              type="password"
-              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Enter your password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
-          </div>
-
-          <div className="text-center mb-4">
-            <button
-              type="submit"
-              className="w-full bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600 transition"
-            >
-              {isLogin ? "Log In" : "Sign Up"}
-            </button>
-          </div>
-
-          <div className="text-center text-sm">
-            <p className="text-gray-600">
-              {isLogin
-                ? "Don't have an account? "
-                : "Already have an account? "}
-              <span
-                className="text-blue-500 cursor-pointer"
-                onClick={() => setIsLogin(!isLogin)}
-              >
-                {isLogin ? "Sign Up" : "Log In"}
-              </span>
-            </p>
-          </div>
-        </form>
+        <div className="p-4 border dark:border-gray-700 rounded-lg">
+          <p className="text-lg font-semibold dark:text-white">Posts</p>
+          <p className="text-gray-500 text-sm">Coming Soon</p>
+        </div>
       </div>
     </div>
   );
